@@ -47,23 +47,3 @@ Click the toolbar icon to open the dashboard, then on the **Setup** tab:
 Once both steps pass, the dashboard auto-opens to the **Search** tab on subsequent loads.
 
 If `Check auth` later starts failing, your CMS session has expired — sign in again and retry. If you previously denied a host on Firefox, revoke the leftover grant from the browser's extension settings and re-grant from Setup.
-
-## Updates
-
-The dashboard checks for a newer release on each open by reading [`latest.json`](https://raw.githubusercontent.com/ramSilva/atom-cms-search-ext-releases/main/latest.json) at the root of this repository's `main` branch. When a newer version is published, a banner appears above the dashboard tabs linking to that release. Dismissal lasts for the session only — the banner re-appears next time the dashboard is opened until the new version is installed.
-
-Installing an update is the same as a first install: download the new zip from the Releases page, unzip, and reload the unpacked extension (Firefox: re-add as a temporary add-on after restart).
-
-## About this repo
-
-- **Releases / tags** — each tag (e.g. `v0.1.1`) has the per-browser zips attached as assets and the version-specific changelog in the release notes.
-- **`latest.json`** — version manifest the extension fetches on each dashboard open. Shape:
-  ```json
-  {
-    "version": "X.Y.Z",
-    "url": "<release-tag-url>",
-    "notes": "Short, user-facing changelog."
-  }
-  ```
-
-Source code is not in this repo. It lives in a separate private repository; access is internal and is only required if you want to read or build the source yourself.
