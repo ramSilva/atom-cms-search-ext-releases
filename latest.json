@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
-  "url": "https://github.com/ramSilva/atom-cms-search-ext-releases/releases/tag/v0.1.0",
-  "notes": "Initial release."
+  "version": "0.1.1",
+  "url": "https://github.com/ramSilva/atom-cms-search-ext-releases/releases/tag/v0.1.1",
+  "notes": "Dashboard usability + UI pass. No behavioural changes \u2014 easier to read, easier to find the action you came in for. See the release notes for the full list."
 }
