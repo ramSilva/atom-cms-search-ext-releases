@@ -2,90 +2,66 @@
 
 **Find which CMS widgets a given app config actually uses, fast.**
 
-A browser extension for internal devs and QA who spot-check Atom CMS widgets against the live Peacock or SkyShowtime app config. Pick the proposition, environment, and the app build you're investigating; optionally narrow by template format; then click through any matching widget straight into the CMS editor.
+A browser extension for internal devs and QA who spot-check Atom CMS widgets against the live Peacock or SkyShowtime app config. Works in Chrome, Edge, Brave, and Firefox.
 
-Works in Chrome, Edge, Brave, and Firefox.
+This repository is the **public release mirror** — it hosts the prebuilt browser zips, the user-facing release notes, and the `latest.json` update manifest. Source code lives in a separate private repository; access to it is not required to install or use the extension.
 
-This repository is the **public release mirror**. It hosts the prebuilt browser zips, the user-facing release notes, and `latest.json` (the manifest the extension's update banner polls). Source code lives in a separate private repo and is not required to install or use the extension.
+## What you can do
 
----
+- **Search widgets** for the current proposition + environment + territory + app build, then click any result straight into the CMS editor.
+- **Filter results** live by free text — name, slug, config, body, or all fields — or score them against a saved list of **template formats** with a similarity threshold.
+- **Find duplicate widgets** either within a single territory (different slugs, identical bodies) or across territories (per slug, do bodies drift between territories?).
+- **Find dead config entries** by pointing the extension at an Android, iOS, or web source repo — the extension cross-references your config against both Atom and the code and surfaces entries that aren't backed by an Atom widget or aren't read by the code.
+- **Stay current.** A banner in the dashboard surfaces newer releases when one is available.
 
-## 1. Install
+## Install
 
 Download the latest build for your browser from the [latest release](https://github.com/ramSilva/atom-cms-search-ext-releases/releases/latest):
 
 - **Chrome / Edge / Brave** → `atom-cms-search-ext-vX.Y.Z-chrome.zip`
 - **Firefox** → `atom-cms-search-ext-vX.Y.Z-firefox.zip`
 
-Unzip the archive somewhere stable (don't delete or move the folder afterwards — the browser keeps loading the extension from that location).
+Unzip the archive somewhere stable (don't move or delete the folder afterwards — the browser keeps loading the extension from that location).
 
 ### Chrome / Edge / Brave
 
 1. Open `chrome://extensions` (or `edge://extensions`, `brave://extensions`).
 2. Turn on **Developer mode** (top-right).
 3. Click **Load unpacked** and select the unzipped folder.
-4. The **Atom CMS Search** icon appears in the toolbar.
 
 ### Firefox
 
 1. Open `about:debugging#/runtime/this-firefox`.
-2. Click **Load Temporary Add-on…**.
-3. Select any file inside the unzipped folder (e.g. `manifest.json`).
-4. The **Atom CMS Search** icon appears in the toolbar.
+2. Click **Load Temporary Add-on…** and select `manifest.json` inside the unzipped folder.
 
 > Firefox clears temporary add-ons on restart — re-load after each browser restart.
 
----
+## First-time setup
 
-## 2. First-time setup
+Click the toolbar icon to open the dashboard, then on the **Setup** tab:
 
-Click the toolbar icon to open the dashboard. The dashboard has two tabs — **Setup** and **Search** — and a top bar where you pick **Proposition** (Peacock or SST) and **Environment** (Stable or Prod). Both default to Peacock / Stable each time you open the dashboard.
+1. **Grant host access** for the proposition(s) you'll investigate (Peacock and/or SST). Approve every URL in the browser prompt.
+2. **Sign in to Atom CMS** in a separate browser tab for the proposition + environment you'll use. The extension reuses that browser session — it never sees your credentials.
+3. Back in the dashboard, click **Check auth**. If it fails, follow the sign-in link it surfaces and retry.
 
-On the **Setup** tab:
+Once both steps pass, the dashboard auto-opens to the **Search** tab on subsequent loads.
 
-1. **Grant host access.** Click **Grant all hosts (Peacock)** and/or **Grant all hosts (SST)** depending on which one(s) you'll use. Approve every URL in the browser prompt. On Chrome/Edge/Brave this is usually already done for you at install.
-2. **Sign in to Atom CMS.** In another tab, sign in to the CMS for the proposition + environment you'll use:
-   - **Peacock stable**: <https://stable-int.atom.dev.nbcuott.com>
-   - **Peacock prod**: <https://cms.atom.nbcuott.com>
-   - **SST stable**: <https://stable-int.atom.dev.us.summerott.com>
-   - **SST prod**: <https://cms.atom.eu.summerott.com>
-3. Back in the dashboard, click **Check auth**. If it fails with a sign-in link, click the link, sign in, and retry. The extension never sees your credentials — it reuses the browser's existing CMS session.
+If `Check auth` later starts failing, your CMS session has expired — sign in again and retry. If you previously denied a host on Firefox, revoke the leftover grant from the browser's extension settings and re-grant from Setup.
 
-Once both are done, the dashboard switches you to the **Search** tab automatically the next time you open it (as long as the active proposition's hosts are still granted).
+## Updates
 
----
+The dashboard checks for a newer release on each open by reading [`latest.json`](https://raw.githubusercontent.com/ramSilva/atom-cms-search-ext-releases/main/latest.json) at the root of this repository's `main` branch. When a newer version is published, a banner appears above the dashboard tabs linking to that release. Dismissal lasts for the session only — the banner re-appears next time the dashboard is opened until the new version is installed.
 
-## 3. Search for widgets
+Installing an update is the same as a first install: download the new zip from the Releases page, unzip, and reload the unpacked extension (Firefox: re-add as a temporary add-on after restart).
 
-On the **Search** tab:
+## About this repo
 
-1. **Pick the app build you're investigating.** Choose a platform (Android, iOS, …) and version. The extension will fetch that build's config and use it as the source of truth for which widgets are "in use".
-   - If you have a config URL that doesn't match the standard pattern, pick **Other** and paste the full URL. The extension fetches it as-is — proposition, environment, platform, and version are ignored in this mode. The URL is remembered between sessions.
-2. *(Optional)* **Add template formats** to narrow results to widgets that share a specific structural shape — useful when you're hunting widgets built from the same template, or all widgets exposing a particular feature. Each entry persists between sessions and is shared across propositions.
-3. Click **List widgets**.
-
-Results appear as a list. Skim them to confirm what you expected to be there is there (or isn't). Click any row to open that widget directly in the CMS editor in a new tab.
-
-When you change proposition or environment mid-session, the picker, auth state, and any displayed results are cleared so you don't act on stale data.
-
----
-
-## 4. Re-running auth or access later
-
-- If **Check auth** starts failing, your session has probably expired — click the sign-in link the extension surfaces, sign in again, retry.
-- If you previously denied a host on Firefox, revoke any leftover grants from the browser's extension settings page, reopen the dashboard, and click **Grant all hosts** again.
-- Switching proposition or environment doesn't re-check host access automatically; if you switch and the Search tab won't load, head back to **Setup** and grant the new proposition's hosts.
-
----
-
-## What this repo contains
-
-- **Releases / tags** — each tag (e.g. `v0.1.0`) has the per-browser zips attached as assets and the user-facing changelog in the release notes.
-- **`latest.json`** — version manifest the extension fetches on every dashboard load. Shape:
+- **Releases / tags** — each tag (e.g. `v0.1.1`) has the per-browser zips attached as assets and the version-specific changelog in the release notes.
+- **`latest.json`** — version manifest the extension fetches on each dashboard open. Shape:
   ```json
   {
     "version": "X.Y.Z",
-    "url": "https://github.com/ramSilva/atom-cms-search-ext-releases/releases/tag/vX.Y.Z",
+    "url": "<release-tag-url>",
     "notes": "Short, user-facing changelog."
   }
   ```
