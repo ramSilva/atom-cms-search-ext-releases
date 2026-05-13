@@ -1,5 +1,5 @@
 {
-  "version": "0.1.1",
-  "url": "https://github.com/ramSilva/atom-cms-search-ext-releases/releases/tag/v0.1.1",
-  "notes": "Dashboard usability + UI pass. No behavioural changes \u2014 easier to read, easier to find the action you came in for. See the release notes for the full list."
+  "version": "0.2.0",
+  "url": "https://github.com/ramSilva/atom-cms-search-ext-releases/releases/tag/v0.2.0",
+  "notes": "Adds a \"Not contains\" filter mode on the Search tab — exclude widgets that contain a given term in the selected scope, mix with regular Contains chips under AND/OR. Plus a small polish pass on the Setup tab. See the release notes for the full list."
 }
